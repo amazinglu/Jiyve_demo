@@ -1,18 +1,25 @@
 package com.example.amazinglu.jiyve_demo;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.amazinglu.jiyve_demo.Model.HappyHour;
 import com.example.amazinglu.jiyve_demo.Model.Restaurant;
+import com.example.amazinglu.jiyve_demo.Util.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +31,8 @@ import butterknife.ButterKnife;
 public class MainFragment extends Fragment {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+
+    public static final String KEY_RESTAURANT = "key_restaurant";
 
     private List<Restaurant> restaurantList;
 
@@ -54,6 +63,32 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         MRecyclerViewAdapter adapter = new MRecyclerViewAdapter(restaurantList);
         recyclerView.setAdapter(adapter);
+    }
+
+    @SuppressLint({"RestrictedApi", "ResourceAsColor"})
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search, menu);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        Bundle appData = new Bundle();
+        appData.putStringArrayList(KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
+        searchView.setAppSearchData(appData);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconified(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
+            case android.R.id.home:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadData() {

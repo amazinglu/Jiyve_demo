@@ -7,4 +7,6 @@
     <string name="text_home">Home</string>
     <string name="text_favorite">Saved</string>
     <string name="text_profile">Profile</string>
+    <string name="search_hint">restaurant</string>
+    <string name="search_button_title">search</string>
 </resources>
