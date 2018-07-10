@@ -8,4 +8,5 @@
     <dimen name="item_recommend_padding">7dp</dimen>
     <dimen name="item_margin_left_right">15dp</dimen>
     <dimen name="card_view_radius">5dp</dimen>
+    <dimen name="toolbar_elevation">0dp</dimen>
 </resources>

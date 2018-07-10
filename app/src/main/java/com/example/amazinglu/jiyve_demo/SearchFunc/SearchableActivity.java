@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 public class SearchableActivity extends AppCompatActivity {
 
     @BindView(R.id.search_result_list_view) RecyclerView resultRecyclerView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+//    @BindView(R.id.toolbar) Toolbar toolbar;
 
     private List<Restaurant> unfilterData, data;
     private MRecyclerViewAdapter adapter;
@@ -38,7 +38,7 @@ public class SearchableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_searchable);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         handleIntent(getIntent());
