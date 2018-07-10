@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Jiyve_demo</string>
+    <string name="Restaurant_name_text">Restaurant Name</string>
+    <string name="Restaurant_type_text"><![CDATA[seafood & Chinese]]></string>
+    <string name="happy_hour_title">Happy Hour</string>
+    <string name="daily">Daily</string>
+    <string name="text_home">Home</string>
+    <string name="text_favorite">Saved</string>
+    <string name="text_profile">Profile</string>
+</resources>
