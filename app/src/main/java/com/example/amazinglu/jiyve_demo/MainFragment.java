@@ -1,7 +1,6 @@
 package com.example.amazinglu.jiyve_demo;
 
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,8 +19,9 @@ import android.widget.Toast;
 
 import com.example.amazinglu.jiyve_demo.Model.HappyHour;
 import com.example.amazinglu.jiyve_demo.Model.Restaurant;
-import com.example.amazinglu.jiyve_demo.SearchableBarResult.ResultActivity;
+import com.example.amazinglu.jiyve_demo.SearchFunction.ResultActivity;
 import com.example.amazinglu.jiyve_demo.Util.ModelUtil;
+import com.example.amazinglu.jiyve_demo.base.MSimpleOnSearchActionListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
@@ -70,38 +69,12 @@ public class MainFragment extends Fragment {
         MRecyclerViewAdapter adapter = new MRecyclerViewAdapter(restaurantList);
         recyclerView.setAdapter(adapter);
 
-        setUpSearchbar();
+        setUpSearchBar();
     }
 
-    @SuppressLint({"RestrictedApi", "ResourceAsColor"})
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_search, menu);
-//
-//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//
-//        Bundle appData = new Bundle();
-//        appData.putStringArrayList(KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
-//        searchView.setAppSearchData(appData);
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-//        searchView.setIconified(false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//            case R.id.action_search:
-//                return true;
-            case android.R.id.home:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setUpSearchbar() {
+    private void setUpSearchBar() {
         searchBar.setHint(getActivity().getResources().getString(R.string.search_bar_hint));
-        searchBar.setOnSearchActionListener(new MSearchBarOnSearchActionListener());
+        searchBar.setOnSearchActionListener(new MainFragmentOnSearchActionListener());
     }
 
     private void loadData() {
@@ -109,33 +82,19 @@ public class MainFragment extends Fragment {
         fakeData();
     }
 
-    class MSearchBarOnSearchActionListener implements MaterialSearchBar.OnSearchActionListener {
+    class MainFragmentOnSearchActionListener extends MSimpleOnSearchActionListener {
         @Override
-        public void onSearchStateChanged(boolean enabled) {
-            String s = enabled ? "enabled" : "disabled";
-            Toast.makeText(getContext(), "Search " + s, Toast.LENGTH_SHORT).show();
+        protected Context getContext() {
+            return MainFragment.this.getContext();
         }
 
         @Override
-        public void onSearchConfirmed(CharSequence text) {
-            startSearch(text.toString());
+        protected void startSearch(String query) {
+            Intent intent = new Intent(getContext(), ResultActivity.class);
+            intent.putExtra(KEY_QUERY, query);
+            intent.putExtra(KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
+            getActivity().startActivity(intent);
         }
-
-        @Override
-        public void onButtonClicked(int buttonCode) {
-            switch (buttonCode) {
-                case MaterialSearchBar.BUTTON_NAVIGATION:
-                    Toast.makeText(getContext(), "click nav button", Toast.LENGTH_LONG).show();
-                    return;
-            }
-        }
-    }
-
-    private void startSearch(String query) {
-        Intent intent = new Intent(getContext(), ResultActivity.class);
-        intent.putExtra(KEY_QUERY, query);
-        intent.putExtra(KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
-        getActivity().startActivity(intent);
     }
 
     /**

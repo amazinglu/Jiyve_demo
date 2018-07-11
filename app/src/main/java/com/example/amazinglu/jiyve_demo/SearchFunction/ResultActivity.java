@@ -1,5 +1,6 @@
-package com.example.amazinglu.jiyve_demo.SearchableBarResult;
+package com.example.amazinglu.jiyve_demo.SearchFunction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.example.amazinglu.jiyve_demo.MainFragment;
 import com.example.amazinglu.jiyve_demo.Model.Restaurant;
 import com.example.amazinglu.jiyve_demo.R;
 import com.example.amazinglu.jiyve_demo.Util.ModelUtil;
+import com.example.amazinglu.jiyve_demo.base.MSimpleOnSearchActionListener;
 import com.google.gson.reflect.TypeToken;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
@@ -46,7 +48,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private void setUpSearchBar() {
         searchBar.setHint(getResources().getString(R.string.search_bar_hint));
-        searchBar.setOnSearchActionListener(new MSearchBarOnSearchActionListener());
+        searchBar.setOnSearchActionListener(new ResActivityOnSearchActionListener());
     }
 
     @Override
@@ -57,14 +59,14 @@ public class ResultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         finish();
     }
 
     private void handleIntent(Intent intent) {
-        restaurantList = ModelUtil.toObjectList(getIntent().getStringArrayListExtra(MainFragment.KEY_RESTAURANT),
+        restaurantList = ModelUtil.toObjectList(intent.getStringArrayListExtra(MainFragment.KEY_RESTAURANT),
                 new TypeToken<Restaurant>(){});
-        query = getIntent().getStringExtra(MainFragment.KEY_QUERY);
+        query = intent.getStringExtra(MainFragment.KEY_QUERY);
 
         if (adapter == null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(ResultActivity.this));
@@ -76,33 +78,25 @@ public class ResultActivity extends AppCompatActivity {
         doSearch(query);
     }
 
-    private void startSearch(String query) {
-        doSearch(query);
-    }
-
     private void doSearch(String query) {
         SearchAsyncTask asyncTask = new SearchAsyncTask(restaurantList, query);
         asyncTask.execute();
     }
 
-    class MSearchBarOnSearchActionListener implements MaterialSearchBar.OnSearchActionListener {
+    // OnSearchActionListener for search bar
+    class ResActivityOnSearchActionListener extends MSimpleOnSearchActionListener{
         @Override
-        public void onSearchStateChanged(boolean enabled) {
-            String s = enabled ? "enabled" : "disabled";
-            Toast.makeText(ResultActivity.this, "Search " + s, Toast.LENGTH_SHORT).show();
+        protected Context getContext() {
+            return ResultActivity.this;
         }
 
         @Override
-        public void onSearchConfirmed(CharSequence text) {
-            startSearch(text.toString());
-        }
-
-        @Override
-        public void onButtonClicked(int buttonCode) {
-
+        protected void startSearch(String query) {
+            doSearch(query);
         }
     }
 
+    // async task to do the search
     class SearchAsyncTask extends AsyncTask<Void, Void, List<Restaurant>> {
 
         private List<Restaurant> restaurantList;
