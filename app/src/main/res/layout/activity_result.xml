@@ -6,14 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        app:speechMode="true"
-        app:hint="Custom hint"
-        app:maxSuggestionsCount="10"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:id="@+id/result_search_bar" />
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/baseline_arrow_back_white_18dp"/>
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            app:speechMode="true"
+            app:hint="Custom hint"
+            app:maxSuggestionsCount="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back_button"
+            android:background="@color/colorPrimary"
+            android:id="@+id/result_search_bar" />
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/result_recycler_view"

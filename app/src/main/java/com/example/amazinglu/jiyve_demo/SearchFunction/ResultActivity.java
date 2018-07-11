@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.amazinglu.jiyve_demo.MRecyclerViewAdapter;
@@ -29,6 +31,7 @@ public class ResultActivity extends AppCompatActivity {
 
     @BindView(R.id.result_search_bar) MaterialSearchBar searchBar;
     @BindView(R.id.result_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.back_button) ImageButton backButton;
 
     private List<Restaurant> restaurantList;
     private List<Restaurant> searhResult;
@@ -42,8 +45,14 @@ public class ResultActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setUpSearchBar();
-
         handleIntent(getIntent());
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setUpSearchBar() {
@@ -92,7 +101,11 @@ public class ResultActivity extends AppCompatActivity {
 
         @Override
         protected void startSearch(String query) {
-            doSearch(query);
+//            doSearch(query);
+            Intent intent = new Intent(ResultActivity.this, ResultActivity.class);
+            intent.putExtra(MainFragment.KEY_QUERY, query);
+            intent.putExtra(MainFragment.KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
+            startActivity(intent);
         }
     }
 
