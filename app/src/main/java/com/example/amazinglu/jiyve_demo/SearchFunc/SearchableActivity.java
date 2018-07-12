@@ -1,6 +1,8 @@
 package com.example.amazinglu.jiyve_demo.SearchFunc;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.SearchView;
 
 import com.example.amazinglu.jiyve_demo.MRecyclerViewAdapter;
 import com.example.amazinglu.jiyve_demo.MainFragment;
@@ -27,7 +32,8 @@ import butterknife.ButterKnife;
 public class SearchableActivity extends AppCompatActivity {
 
     @BindView(R.id.search_result_list_view) RecyclerView resultRecyclerView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.search_res_back_button) ImageButton backButton;
+    @BindView(R.id.search_res_search_view) android.support.v7.widget.SearchView searchView;
 
     private List<Restaurant> unfilterData, data;
     private MRecyclerViewAdapter adapter;
@@ -38,10 +44,16 @@ public class SearchableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_searchable);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         handleIntent(getIntent());
+
+        setUpSearchView();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -50,14 +62,23 @@ public class SearchableActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    @SuppressLint("RestrictedApi")
+    private void setUpSearchView() {
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        Bundle appData = new Bundle();
+        appData.putStringArrayList(MainFragment.KEY_RESTAURANT, ModelUtil.toJsonList(unfilterData));
+        searchView.setAppSearchData(appData);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconified(true);
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (searchView.isIconified()) {
+                    searchView.setIconified(false);
+                }
+            }
+        });
     }
 
     private void handleIntent(Intent intent) {

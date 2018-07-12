@@ -2,9 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"/>
+    <!--<include layout="@layout/toolbar"/>-->
+
+    <RelativeLayout
+        android:id="@+id/search_view_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/layout_margin"
+        android:layout_marginLeft="@dimen/item_margin_left_right"
+        android:layout_marginRight="@dimen/item_margin_left_right"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/search_res_back_button"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_button_background"
+            android:tint="@android:color/tab_indicator_text"
+            android:src="@drawable/baseline_arrow_back_black_18dp_large"/>
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_res_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/search_res_back_button"
+            android:background="@drawable/search_view_background"/>
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_list_view"
