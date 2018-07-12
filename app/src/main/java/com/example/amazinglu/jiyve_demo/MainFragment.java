@@ -20,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.amazinglu.jiyve_demo.Model.HappyHour;
 import com.example.amazinglu.jiyve_demo.Model.Restaurant;
@@ -43,6 +46,7 @@ public class MainFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.main_search_view) SearchView searchView;
     @BindView(R.id.recycler_view_swipe_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.back_button) ImageButton backButton;
 
     public static final String KEY_RESTAURANT = "key_restaurant";
 
@@ -87,6 +91,13 @@ public class MainFragment extends Fragment {
             public void onRefresh() {
                 RefreshTask refreshTask = new RefreshTask();
                 refreshTask.execute();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "back button clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
