@@ -13,8 +13,8 @@ public class MyCustomSuggestionProvider extends ContentProvider {
 
     private static String[] matrixCursorColumns = {"_id",
             SearchManager.SUGGEST_COLUMN_TEXT_1,
-            SearchManager.SUGGEST_COLUMN_INTENT_DATA,
-            SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
+            SearchManager.SUGGEST_COLUMN_INTENT_DATA, // the data that will pass with the intent
+            SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID}; // the data id that will pass with the intent
 
     @Override
     public boolean onCreate() {

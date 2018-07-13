@@ -1,0 +1,11 @@
+when there is no toolbar and system action bar, to avoid the view 和 status bar 重叠
+可以加上： android:fitsSystemWindows="true"
+
+searchView will auto show the keyboard when it is not isIconified
+want the keyboard hide => searchView.setIconified(false)
+when searchView belong to an icon, it will become an icon
+when not belong to an icon, it will still a search bar
+
+In doInBackground method, do not use object in UI thread => may lead to thread not safe
+=> same to all multi-thread code
+

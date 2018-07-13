@@ -102,15 +102,6 @@ public class MainFragment extends Fragment {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadData() {
         restaurantList = new ArrayList<>();
         fakeData();
@@ -124,6 +115,9 @@ public class MainFragment extends Fragment {
         appData.putStringArrayList(KEY_RESTAURANT, ModelUtil.toJsonList(restaurantList));
         searchView.setAppSearchData(appData);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        /**
+         * the keyboard will not automatically show
+         * */
         searchView.setIconified(true);
 
         searchView.setOnClickListener(new View.OnClickListener() {
